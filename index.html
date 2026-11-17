@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="追蹤全球氣候變遷趨勢、重要科學數據與最新研究論文，從科學證據理解地球環境的變化。">
+  <meta name="theme-color" content="#173f32">
+  <title>Climate Atlas｜全球氣候變遷與研究追蹤站</title>
+  <style>
+    :root {
+      --forest: #2d6a4f;
+      --deep: #173f32;
+      --mint: #52b788;
+      --sage: #dcece2;
+      --paper: #f8f9fa;
+      --ink: #1e3029;
+      --muted: #66756e;
+      --line: #e3e9e5;
+      --white: #fff;
+      --serif: Georgia, "Noto Serif TC", "Songti TC", serif;
+      --sans: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--sans); line-height: 1.75; }
+    a { color: inherit; text-decoration: none; }
+    .wrap { width: min(1160px, calc(100% - 48px)); margin: 0 auto; }
+    .topbar { position: sticky; top: 0; z-index: 20; background: rgba(248,249,250,.92); backdrop-filter: blur(16px); border-bottom: 1px solid rgba(227,233,229,.85); }
+    .nav { min-height: 78px; display: flex; align-items: center; justify-content: space-between; gap: 28px; }
+    .brand { display: flex; align-items: center; gap: 12px; font-weight: 800; letter-spacing: .02em; color: var(--deep); white-space: nowrap; }
+    .brand-mark { width: 38px; height: 38px; border-radius: 13px; display: grid; place-items: center; background: var(--deep); color: white; }
+    .brand-mark svg { width: 23px; height: 23px; }
+    .brand small { display: block; color: var(--muted); font-size: 10px; letter-spacing: .13em; font-weight: 600; line-height: 1.2; }
+    .nav-links { display: flex; align-items: center; gap: 32px; color: #52645b; font-size: 13px; font-weight: 600; }
+    .nav-links a { transition: color .2s; }
+    .nav-links a:hover { color: var(--mint); }
+    .nav-cta { background: var(--forest); color: white !important; padding: 10px 17px; border-radius: 999px; }
+    .menu-toggle { display: none; border: 1px solid var(--line); background: white; color: var(--deep); border-radius: 10px; padding: 8px 11px; font-size: 18px; cursor: pointer; }
+    .hero { position: relative; overflow: hidden; background: var(--deep); color: white; padding: 86px 0 92px; }
+    .hero:before { content: ""; position: absolute; width: 650px; height: 650px; right: -120px; top: -320px; border: 1px solid rgba(190,230,205,.16); border-radius: 50%; box-shadow: 0 0 0 48px rgba(190,230,205,.035), 0 0 0 100px rgba(190,230,205,.025), 0 0 0 155px rgba(190,230,205,.02); }
+    .hero:after { content: ""; position: absolute; width: 420px; height: 420px; right: 8%; bottom: -330px; border-radius: 50%; background: radial-gradient(circle, rgba(82,183,136,.25), transparent 68%); }
+    .hero-inner { position: relative; z-index: 1; display: grid; grid-template-columns: 1.08fr .92fr; align-items: center; gap: 50px; }
+    .eyebrow { display: inline-flex; align-items: center; gap: 10px; color: #a8d9bd; font-size: 11px; letter-spacing: .18em; font-weight: 700; text-transform: uppercase; }
+    .eyebrow:before { content: ""; width: 26px; height: 1px; background: var(--mint); }
+    h1 { margin: 22px 0 20px; font-family: var(--serif); font-size: clamp(42px, 5.2vw, 68px); line-height: 1.22; letter-spacing: -.035em; font-weight: 500; }
+    h1 em { color: #8bd2a9; font-style: normal; }
+    .hero-copy { max-width: 550px; color: #c5d6cc; font-size: 15px; line-height: 2; }
+    .hero-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 13px; margin-top: 30px; }
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; padding: 12px 20px; border-radius: 999px; font-size: 13px; font-weight: 700; transition: transform .2s, background .2s; }
+    .btn:hover { transform: translateY(-2px); }
+    .btn-primary { background: var(--mint); color: #123b2d; }
+    .btn-ghost { color: white; border: 1px solid rgba(255,255,255,.25); }
+    .hero-visual { min-height: 350px; position: relative; display: grid; place-items: center; }
+    .globe { width: min(360px, 90%); aspect-ratio: 1; border-radius: 50%; position: relative; overflow: hidden; background: radial-gradient(circle at 35% 30%, #b5e2c5 0 4%, #5eaa82 19%, #27664f 48%, #123d31 75%); box-shadow: inset -28px -24px 55px rgba(0,0,0,.35), 0 30px 80px rgba(0,0,0,.25); }
+    .globe:before { content: ""; position: absolute; inset: -10%; border-radius: 50%; background: repeating-linear-gradient(0deg, transparent 0 47px, rgba(222,247,230,.2) 48px 49px), repeating-linear-gradient(90deg, transparent 0 47px, rgba(222,247,230,.16) 48px 49px); transform: rotate(-18deg); }
+    .globe:after { content: ""; position: absolute; width: 125%; height: 34%; left: -12%; top: 33%; border: 1px solid rgba(223,248,230,.65); border-radius: 50%; transform: rotate(-24deg); box-shadow: 0 0 0 23px rgba(223,248,230,.07), 0 0 0 48px rgba(223,248,230,.05); }
+    .globe-label { position: absolute; right: 0; bottom: 28px; padding: 13px 17px; background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.2); backdrop-filter: blur(12px); border-radius: 14px; color: #e7f4eb; font-size: 11px; letter-spacing: .08em; }
+    .globe-label strong { display: block; font-family: var(--serif); font-size: 23px; font-weight: 500; letter-spacing: 0; }
+    .section { padding: 86px 0; }
+    .section-head { display: flex; justify-content: space-between; align-items: end; gap: 24px; margin-bottom: 34px; }
+    .kicker { color: var(--forest); font-size: 11px; letter-spacing: .17em; text-transform: uppercase; font-weight: 800; }
+    h2 { margin: 8px 0 0; font-family: var(--serif); font-weight: 500; font-size: clamp(29px, 3vw, 40px); letter-spacing: -.025em; color: var(--deep); line-height: 1.35; }
+    .section-intro { max-width: 450px; color: var(--muted); font-size: 13px; margin: 0; }
+    .trend-grid { display: grid; grid-template-columns: 1.1fr .9fr; gap: 20px; }
+    .trend-main { background: white; border: 1px solid var(--line); border-radius: 22px; padding: 30px; min-height: 320px; }
+    .trend-main h3 { font-size: 17px; margin: 0 0 10px; color: var(--deep); }
+    .trend-main p { color: var(--muted); font-size: 13px; margin: 0; max-width: 570px; }
+    .chart { margin-top: 28px; height: 135px; position: relative; border-bottom: 1px solid #dfe8e2; background: repeating-linear-gradient(to bottom, transparent 0 32px, #edf2ee 33px 34px); }
+    .chart svg { width: 100%; height: 100%; overflow: visible; }
+    .chart-note { display: flex; justify-content: space-between; color: #829087; font-size: 10px; margin-top: 8px; }
+    .trend-side { display: grid; grid-template-rows: 1fr 1fr; gap: 20px; }
+    .insight { border-radius: 22px; padding: 25px 27px; background: #e8f2eb; }
+    .insight.dark { background: #d7e9dd; }
+    .insight .num { font-family: var(--serif); color: var(--forest); font-size: 34px; line-height: 1.2; }
+    .insight h3 { font-size: 14px; margin: 9px 0 4px; color: var(--deep); }
+    .insight p { margin: 0; color: #64756b; font-size: 12px; }
+    .topics { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 24px; }
+    .tag { border: 1px solid #dce7df; color: #4d6b5a; background: #fff; border-radius: 999px; padding: 7px 13px; font-size: 11px; }
+    .paper-section { background: #eef3ef; }
+    .paper-card { display: grid; grid-template-columns: .78fr 1.22fr; background: white; border: 1px solid #e0e9e2; border-radius: 24px; overflow: hidden; box-shadow: 0 18px 45px rgba(34,75,53,.06); }
+    .paper-art { min-height: 390px; position: relative; overflow: hidden; background: linear-gradient(155deg, #dcebe4, #8bb7a0 55%, #315e4b); }
+    .ice-sun { position: absolute; width: 190px; height: 190px; border-radius: 50%; background: rgba(245,252,248,.75); top: 45px; left: 50%; transform: translateX(-50%); filter: blur(.2px); }
+    .ice-layer { position: absolute; width: 130%; height: 48%; left: -15%; bottom: -4%; background: linear-gradient(145deg, #f5fbf8 0%, #c6e1d6 48%, #77a992 100%); clip-path: polygon(0 48%, 12% 32%, 23% 43%, 35% 12%, 47% 37%, 59% 22%, 71% 48%, 84% 20%, 100% 40%, 100% 100%, 0 100%); }
+    .ice-layer.two { bottom: -17%; left: -8%; opacity: .7; transform: scaleX(-1); background: #4d8168; }
+    .art-caption { position: absolute; left: 25px; top: 25px; color: #24513e; font-size: 10px; letter-spacing: .18em; font-weight: 800; }
+    .paper-content { padding: 34px 38px; }
+    .paper-meta { display: flex; flex-wrap: wrap; gap: 9px; align-items: center; color: #75847b; font-size: 11px; }
+    .paper-type { background: #e2f1e7; color: var(--forest); padding: 5px 10px; border-radius: 999px; font-weight: 700; }
+    .paper-content h3 { margin: 17px 0 12px; color: var(--deep); font-family: var(--serif); font-size: clamp(23px, 2.5vw, 31px); line-height: 1.4; font-weight: 500; }
+    .paper-source { color: var(--forest); font-size: 12px; font-weight: 700; }
+    .paper-content p { color: var(--muted); font-size: 13px; margin: 16px 0; }
+    .paper-content h4 { color: var(--deep); font-size: 12px; margin: 20px 0 5px; }
+    .paper-content .takeaway { border-left: 3px solid var(--mint); padding: 3px 0 3px 14px; color: #53675b; background: #f7faf7; }
+    .paper-footer { display: flex; justify-content: space-between; align-items: center; gap: 15px; margin-top: 24px; padding-top: 18px; border-top: 1px solid var(--line); }
+    .paper-footer small { color: #87948c; font-size: 10px; }
+    .read-link { color: var(--forest); font-size: 12px; font-weight: 800; }
+    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; align-items: center; }
+    .about-copy { color: var(--muted); font-size: 14px; max-width: 540px; }
+    .principles { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .principle { padding: 19px; background: white; border: 1px solid var(--line); border-radius: 16px; }
+    .principle span { display: block; color: var(--mint); font-family: var(--serif); font-size: 24px; }
+    .principle strong { display: block; color: var(--deep); font-size: 12px; margin: 5px 0; }
+    .principle small { color: var(--muted); font-size: 11px; }
+    footer { background: var(--deep); color: #c0d2c7; padding: 30px 0; }
+    .footer-inner { display: flex; justify-content: space-between; gap: 20px; align-items: center; }
+    footer strong { color: white; font-size: 13px; }
+    footer small { font-size: 10px; color: #9db4a6; }
+    @media (max-width: 800px) {
+      .nav-links { display: none; position: absolute; top: 78px; left: 0; right: 0; padding: 20px 24px 24px; background: var(--paper); border-bottom: 1px solid var(--line); flex-direction: column; align-items: stretch; gap: 17px; }
+      .nav-links.open { display: flex; }
+      .menu-toggle { display: block; }
+      .hero { padding: 65px 0 70px; }
+      .hero-inner, .trend-grid, .paper-card, .about-grid { grid-template-columns: 1fr; }
+      .hero-visual { min-height: 270px; }
+      .globe { width: 260px; }
+      .globe-label { right: 7%; bottom: 4px; }
+      .trend-side { grid-template-columns: 1fr 1fr; grid-template-rows: auto; }
+      .paper-art { min-height: 270px; }
+      .about-grid { gap: 28px; }
+    }
+    @media (max-width: 520px) {
+      .wrap { width: min(100% - 34px, 1160px); }
+      .nav { min-height: 68px; }
+      .nav-links { top: 68px; }
+      .brand { font-size: 13px; }
+      .brand small { font-size: 9px; }
+      .hero { padding: 52px 0 55px; }
+      h1 { font-size: 42px; }
+      .hero-copy { font-size: 13px; }
+      .hero-visual { min-height: 230px; }
+      .globe { width: 215px; }
+      .section { padding: 62px 0; }
+      .section-head { display: block; }
+      .section-intro { margin-top: 13px; }
+      .trend-main, .paper-content { padding: 23px; }
+      .trend-side { grid-template-columns: 1fr; }
+      .paper-footer, .footer-inner { align-items: flex-start; flex-direction: column; }
+      .principles { gap: 9px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="wrap nav">
+      <a class="brand" href="#home" aria-label="Climate Atlas 首頁">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M19.5 4.5C11 4.7 5.2 7.1 5.2 13.1c0 3.1 2.2 5.1 5.1 5.1 6.1 0 8.5-6.1 9.2-13.7Z" stroke="currentColor" stroke-width="1.5"/><path d="M3.5 21c2.2-5.1 6.2-8.6 12.1-11.7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </span>
+        <span>Climate Atlas<small>GLOBAL CLIMATE RESEARCH</small></span>
+      </a>
+      <button class="menu-toggle" aria-label="開啟導覽選單" aria-expanded="false" onclick="toggleMenu()">☰</button>
+      <nav class="nav-links" id="navLinks" aria-label="主要導覽">
+        <a href="#trends" onclick="closeMenu()">氣候趨勢</a>
+        <a href="#papers" onclick="closeMenu()">最新論文</a>
+        <a href="#about" onclick="closeMenu()">關於本站</a>
+        <a class="nav-cta" href="#papers" onclick="closeMenu()">探索研究 ↗</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" id="home">
+      <div class="wrap hero-inner">
+        <div>
+          <div class="eyebrow">A living archive of our changing planet</div>
+          <h1>理解氣候，<br><em>看見地球的未來。</em></h1>
+          <p class="hero-copy">從全球氣候趨勢到最新學術研究，整理值得關注的科學證據與環境訊號。讓複雜的氣候知識更容易被理解，也讓每一次更新都成為認識地球的起點。</p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#trends">認識氣候趨勢 <span>↗</span></a>
+            <a class="btn btn-ghost" href="#papers">閱讀最新研究</a>
+          </div>
+        </div>
+        <div class="hero-visual" aria-label="以地球經緯線為意象的綠色視覺圖像">
+          <div class="globe"></div>
+          <div class="globe-label"><strong>01 / 04</strong>OBSERVE · UNDERSTAND · ACT</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="trends">
+      <div class="wrap">
+        <div class="section-head">
+          <div><div class="kicker">01 — Climate overview</div><h2>全球氣候變遷趨勢簡介</h2></div>
+          <p class="section-intro">氣候變遷並非單一現象，而是大氣、海洋、冰凍圈與生態系統彼此連動的長期變化。</p>
+        </div>
+        <div class="trend-grid">
+          <article class="trend-main">
+            <h3>地球正在持續暖化</h3>
+            <p>人類活動排放的溫室氣體增加，使地球能量收支失衡。全球平均氣溫上升，也讓熱浪、強降雨、乾旱與海洋熱浪等風險產生變化。不同地區受到的影響並不相同，理解在地脆弱度與調適能力同樣重要。</p>
+            <div class="chart" role="img" aria-label="示意性的長期全球暖化上升曲線，非實際觀測數據">
+              <svg viewBox="0 0 600 140" preserveAspectRatio="none" aria-hidden="true">
+                <defs><linearGradient id="area" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#52b788" stop-opacity=".28"/><stop offset="1" stop-color="#52b788" stop-opacity="0"/></linearGradient></defs>
+                <path d="M0 117 C55 112 66 105 105 108 S160 101 190 98 S240 100 275 85 S325 91 355 75 S405 78 440 59 S485 63 520 39 S565 35 600 12 L600 140 L0 140Z" fill="url(#area)"/>
+                <path d="M0 117 C55 112 66 105 105 108 S160 101 190 98 S240 100 275 85 S325 91 355 75 S405 78 440 59 S485 63 520 39 S565 35 600 12" fill="none" stroke="#2d6a4f" stroke-width="3" stroke-linecap="round"/>
+                <circle cx="600" cy="12" r="5" fill="#52b788" stroke="#fff" stroke-width="2"/>
+              </svg>
+            </div>
+            <div class="chart-note"><span>過去</span><span>長期變化示意（非觀測資料）</span><span>現在</span></div>
+            <div class="topics"><span class="tag">全球暖化</span><span class="tag">極端氣候</span><span class="tag">海平面上升</span><span class="tag">冰凍圈變化</span></div>
+          </article>
+          <div class="trend-side">
+            <article class="insight">
+              <div class="num">01</div><h3>冰凍圈快速變化</h3>
+              <p>冰川、格陵蘭與南極冰蓋，以及海冰變化，牽動海平面與全球能量平衡。</p>
+            </article>
+            <article class="insight dark">
+              <div class="num">02</div><h3>海洋持續吸收熱量</h3>
+              <p>海洋暖化、酸化與海平面上升，將影響海洋生態、沿海聚落與基礎設施。</p>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section paper-section" id="papers">
+      <div class="wrap">
+        <div class="section-head">
+          <div><div class="kicker">02 — Latest research</div><h2>最新研究論文</h2></div>
+          <p class="section-intro">從近期研究出發，掌握氣候系統的關鍵變化、研究方法與可能的未來影響。</p>
+        </div>
+        <article class="paper-card">
+          <div class="paper-art" role="img" aria-label="北極海冰與極地地景的抽象插畫">
+            <div class="art-caption">FIELD NOTE / THE ARCTIC</div>
+            <div class="ice-sun"></div><div class="ice-layer"></div><div class="ice-layer two"></div>
+          </div>
+          <div class="paper-content">
+            <div class="paper-meta"><span class="paper-type">Review Article｜回顧論文</span><span>2026.11.16</span><span>Nature Reviews Earth & Environment</span></div>
+            <h3>Rapid ice loss events in a warming Arctic</h3>
+            <div class="paper-source">研究主題｜暖化北極中的快速海冰流失事件</div>
+            <h4>核心摘要</h4>
+            <p>這篇回顧研究指出，北極正朝向夏季無冰狀態轉變，但海冰減少未必是平穩、線性的過程。研究整理觀測與模型結果，指出多年尺度的快速海冰流失事件可能在 2040 年前開始，並可能使首次無冰夏季提前。其成因涉及海冰先期變薄、海洋向極區輸送熱量的短期異常、大氣環流，以及冰雪反照率等回饋作用。</p>
+            <h4>關鍵字</h4>
+            <div class="topics" style="margin-top:8px"><span class="tag">北極海冰</span><span class="tag">快速冰損事件</span><span class="tag">冰雪反照率</span><span class="tag">氣候回饋</span></div>
+            <h4>對我們的啟示</h4>
+            <p class="takeaway">北極海冰變化不只關乎極地環境，也可能透過海氣交互作用影響更大尺度的氣候系統。研究提醒我們，除了追蹤長期平均趨勢，也需要留意短時間內快速累積的變化，以及建立能提前辨識風險的監測與預警方式。</p>
+            <div class="paper-footer">
+              <small>來源：Nature Reviews Earth & Environment · Published 16 November 2026</small>
+              <a class="read-link" href="https://www.nature.com/articles/s43017-026-00848-1" target="_blank" rel="noopener noreferrer">閱讀原文 ↗</a>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="about">
+      <div class="wrap about-grid">
+        <div>
+          <div class="kicker">03 — About this archive</div>
+          <h2>讓研究成為<br>理解環境的入口。</h2>
+          <p class="about-copy">Climate Atlas 是一個持續更新的氣候知識整理站，聚焦全球氣候變遷趨勢、重要科學數據與學術論文。本站以易讀的中文摘要整理研究背景、核心發現與延伸啟示，並保留原始來源，讓每一則資訊都能回到研究脈絡中查證。</p>
+        </div>
+        <div class="principles">
+          <div class="principle"><span>01</span><strong>追蹤變化</strong><small>持續關注全球氣候與環境訊號。</small></div>
+          <div class="principle"><span>02</span><strong>回到來源</strong><small>保留論文、機構與數據原始連結。</small></div>
+          <div class="principle"><span>03</span><strong>轉譯知識</strong><small>以清晰摘要整理研究重點。</small></div>
+          <div class="principle"><span>04</span><strong>連結地方</strong><small>思考全球變化對台灣與日常生活的意義。</small></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap footer-inner">
+      <div><strong>Climate Atlas</strong><br><small>GLOBAL CLIMATE CHANGE & RESEARCH TRACKER</small></div>
+      <small>以科學理解變化，以知識回應未來。<br>© 2026 Climate Atlas</small>
+    </div>
+  </footer>
+  <script>
+    function toggleMenu() {
+      const menu = document.getElementById('navLinks');
+      const button = document.querySelector('.menu-toggle');
+      const isOpen = menu.classList.toggle('open');
+      button.setAttribute('aria-expanded', String(isOpen));
+      button.textContent = isOpen ? '×' : '☰';
+    }
+    function closeMenu() {
+      const menu = document.getElementById('navLinks');
+      const button = document.querySelector('.menu-toggle');
+      menu.classList.remove('open');
+      button.setAttribute('aria-expanded', 'false');
+      button.textContent = '☰';
+    }
+  </script>
+</body>
+</html>
